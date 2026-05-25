@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Famille">
+    <meta charset="UTF-8">
+    <title>Répertoire Famille ROBERT</title>
+    <style>
+        body { font-family: 'Courgette', cursive; background-color: #f0f4f8; padding: 20px; text-align: center; }
+        .nav-back { display: block; margin-bottom: 20px; text-decoration: none; color: #1e3a8a; font-weight: bold; }
+        .branche-titre { color: #1e3a8a; border-bottom: 3px solid #1e3a8a; margin: 40px auto 20px; width: fit-content; padding: 0 20px; }
+        .couple-ligne { margin-bottom: 50px; }
+        .parents, .enfants { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; flex-wrap: wrap; }
+        .cellule { background: white; border-radius: 15px; width: 200px; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-top: 8px solid #ccc; }
+        .parent { border-color: #1e3a8a; }
+        .enfant { border-color: #10b981; }
+        .photo { width: 80px; height: 80px; background: #e2e8f0; border-radius: 50%; margin: 0 auto 5px; overflow: hidden; }
+        .photo img { width: 100%; height: 100%; object-fit: cover; }
+        .info { font-size: 0.75em; color: #475569; text-align: left; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="nav-back">⬅ Retour à l'accueil</a>
+    <div id="repertoire"></div>
+
+    <script src="data.js"></script>
+    <script>
+        const container = document.getElementById('repertoire');
+        function creerFiche(nom, type) {
+            const m = familleData.find(item => item.nom === nom) || { nom: nom, n: "?", f: "?", m: "?" };
+            let fileName = m.nom.toLowerCase().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ".jpg";
+            return `<div class='cellule ${type}'><div class='photo'><img src='images/${fileName}' onerror="this.parentElement.innerHTML='Photo'"></div><strong>${m.nom}</strong><div class='info'>🎂 Né(e) : ${m.n}<br>🎁 Fête : ${m.f}<br>💍 Mariage : ${m.m}</div></div>`;
+        }
+
+        // --- Branche Jean-Claude ---
+        container.innerHTML += `<h1 class="branche-titre">Branche Jean-Claude</h1>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Jean-Claude ROBERT", "parent")}${creerFiche("Bernadette BULLE", "parent")}</div><div class="enfants">${creerFiche("Bénédicte ROBERT", "enfant")}${creerFiche("Vincent ROBERT", "enfant")}${creerFiche("Benoit ROBERT", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Bénédicte ROBERT", "parent")}${creerFiche("Lionel MONTHEILLET", "parent")}</div><div class="enfants">${creerFiche("Margaux MONTHEILLET", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Vincent ROBERT", "parent")}${creerFiche("Sandrine BOUVIER", "parent")}</div><div class="enfants">${creerFiche("Marine ROBERT", "enfant")}${creerFiche("Amandine ROBERT", "enfant")}${creerFiche("Alexis ROBERT", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Benoit ROBERT", "parent")}${creerFiche("Lydie VANDOLA", "parent")}</div><div class="enfants">${creerFiche("Maël ROBERT", "enfant")}${creerFiche("Enora ROBERT", "enfant")}</div></div>`;
+
+        // --- Branche Christian ---
+        container.innerHTML += `<h1 class="branche-titre">Branche Christian</h1>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Christian ROBERT", "parent")}${creerFiche("Christine TORTEY", "parent")}</div><div class="enfants">${creerFiche("Julien ROBERT", "enfant")}${creerFiche("Aymeric ROBERT", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Julien ROBERT", "parent")}${creerFiche("Chrystel AZELVANDRE", "parent")}</div><div class="enfants">${creerFiche("Léa ROBERT", "enfant")}${creerFiche("Emy ROBERT", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Aymeric ROBERT", "parent")}${creerFiche("Emilie DUMONT", "parent")}</div><div class="enfants">${creerFiche("Oriane ROBERT", "enfant")}</div></div>`;
+
+        // --- Branche Elisabeth ---
+        container.innerHTML += `<h1 class="branche-titre">Branche Elisabeth</h1>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Elisabeth ROBERT", "parent")}${creerFiche("Octave FERRUS", "parent")}</div><div class="enfants">${creerFiche("David FERRUS", "enfant")}${creerFiche("Hubert FERRUS", "enfant")}${creerFiche("Laurent FERRUS", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Hubert FERRUS", "parent")}${creerFiche("Alisson LENNE", "parent")}</div><div class="enfants">${creerFiche("Lucas FERRUS", "enfant")}</div></div>`;
+
+        // --- Branche Thierry ---
+        container.innerHTML += `<h1 class="branche-titre">Branche Thierry</h1>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Thierry ROBERT", "parent")}${creerFiche("Jacqueline VANCON", "parent")}</div><div class="enfants">${creerFiche("Astrid ROBERT", "enfant")}${creerFiche("Aurélien ROBERT", "enfant")}</div></div>`;
+        container.innerHTML += `<div class="couple-ligne"><div class="parents">${creerFiche("Astrid ROBERT", "parent")}</div><div class="enfants">${creerFiche("Bérénice ANDRES", "enfant")}</div></div>`;
+    </script>
+</body>
+</html>

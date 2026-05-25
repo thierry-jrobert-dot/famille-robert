@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Famille">
+    <meta charset="UTF-8">
+    <title>Admin - Gestion Complète</title>
+    <style>
+        body { font-family: sans-serif; background: #fdf2f8; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 15px; max-width: 500px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        select, input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #10b981; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .resultat { background: #f1f5f9; padding: 15px; margin-top: 20px; border-radius: 5px; font-family: monospace; font-size: 0.85em; white-space: pre-wrap; display: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <a href="index.html">⬅ Retour</a>
+        <h1>⚙️ Administration</h1>
+        
+        <label>Choisir la personne :</label>
+        <select id="selectPersonne" onchange="chargerInfos()">
+            <option value="">-- Choisir --</option>
+        </select>
+
+        <div id="formulaire" style="display:none;">
+            <label>Dates :</label>
+            <input type="text" id="editN" placeholder="Né(e)">
+            <input type="text" id="editF" placeholder="Fête">
+            <input type="text" id="editM" placeholder="Mariage">
+            
+            <button onclick="genererModification()">Enregistrer les modifications</button>
+            
+            <div id="zoneResultat" class="resultat"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const select = document.getElementById('selectPersonne');
+        
+        familleData.forEach((p, index) => {
+            let opt = document.createElement('option');
+            opt.value = index;
+            opt.innerHTML = p.nom;
+            select.appendChild(opt);
+        });
+
+        function chargerInfos() {
+            let index = select.value;
+            if(index === "") { document.getElementById('formulaire').style.display = 'none'; return; }
+            let p = familleData[index];
+            document.getElementById('editN').value = p.n;
+            document.getElementById('editF').value = p.f;
+            document.getElementById('editM').value = p.m;
+            document.getElementById('formulaire').style.display = 'block';
+            document.getElementById('zoneResultat').style.display = 'none';
+        }
+
+        function genererModification() {
+            let p = familleData[select.value];
+            let nouveauBloc = `{ nom: "${p.nom}", n: "${document.getElementById('editN').value}", f: "${document.getElementById('editF').value}", m: "${document.getElementById('editM').value}", branche: "${p.branche}" }`;
+            
+            let zone = document.getElementById('zoneResultat');
+            zone.innerHTML = "Copie cette ligne et remplace l'ancienne dans ton fichier data.js :\n\n" + nouveauBloc;
+            zone.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

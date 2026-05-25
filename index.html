@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Famille">
+    <meta charset="UTF-8">
+    <title>Famille ROBERT - Accueil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Courgette', cursive; background-color: #fdfbf7; margin: 0; padding: 20px; text-align: center; }
+        h1 { color: #1e3a8a; font-size: 1.6em; margin-bottom: 25px; }
+        
+        /* Menu Ronds */
+        .nav-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .nav-item { width: 70px; }
+        .circle-btn { 
+            width: 50px; height: 50px; background: white; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            text-decoration: none; color: #1e3a8a; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .circle-btn:hover { background: #1e3a8a; color: white; }
+        .nav-item span { display: block; font-size: 0.7em; font-weight: bold; color: #1e3a8a; margin-top: 5px; }
+
+        /* Arbre pur - fond transparent */
+        .tree-section { 
+            position: relative; min-height: 700px;
+            background-image: url('images/arbre-fond.jpg');
+            background-size: contain; background-repeat: no-repeat; background-position: center top;
+            padding-top: 20px;
+        }
+        
+        .branche-titre { color: #064e3b; font-weight: bold; font-size: 1.2em; margin: 15px 0; text-shadow: 1px 1px 2px white; }
+        
+        /* Vignettes sans cadre sombre */
+        .gen-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .person-node { width: 70px; }
+        .photo-circle { 
+            width: 55px; height: 55px; border-radius: 50%; background: #ffffff; 
+            margin: 0 auto 5px; border: 2px solid rgba(255,255,255,0.8); box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .photo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        
+        /* Nom avec fond très léger pour lisibilité uniquement */
+        .person-name { 
+            font-size: 0.7em; color: #1e293b; font-weight: bold; 
+            background: rgba(255,255,255,0.5); border-radius: 4px; padding: 1px 4px; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bienvenue dans le répertoire des descendants de<br>Georges et Pierrette ROBERT</h1>
+
+    <div class="nav-container">
+        <div class="nav-item"><a href="repertoire.html" class="circle-btn"><i class="fa-solid fa-book"></i></a><span>Répertoire</span></div>
+        <div class="nav-item"><a href="calendrier.html" class="circle-btn"><i class="fa-solid fa-calendar"></i></a><span>Calendrier</span></div>
+        <div class="nav-item"><a href="contact.html" class="circle-btn"><i class="fa-solid fa-envelope"></i></a><span>Contact</span></div>
+        <div class="nav-item"><a href="livre-dor.html" class="circle-btn"><i class="fa-solid fa-pen"></i></a><span>Livre d'or</span></div>
+        <div class="nav-item"><a href="admin.html" class="circle-btn"><i class="fa-solid fa-gear"></i></a><span>Admin</span></div>
+    </div>
+
+    <div class="tree-section">
+        <div id="arbre-content"></div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const container = document.getElementById('arbre-content');
+        const branches = ["Jean-Claude", "Christian", "Elisabeth", "Thierry"];
+        
+        branches.forEach(b => {
+            container.innerHTML += `<div class="branche-titre">Branche ${b}</div><div class="gen-group" id="groupe-${b}"></div>`;
+            const groupe = document.getElementById(`groupe-${b}`);
+            
+            familleData.filter(m => m.branche === b).forEach(m => {
+                let fileName = m.nom.toLowerCase().replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ".jpg";
+                groupe.innerHTML += `
+                    <div class="person-node">
+                        <div class="photo-circle"><img src="images/${fileName}" onerror="this.src='https://via.placeholder.com/55?text=?'"></div>
+                        <span class="person-name">${m.nom.split(' ')[0]}</span>
+                    </div>`;
+            });
+        });
+    </script>
+</body>
+</html>
